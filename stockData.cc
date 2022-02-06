@@ -8,11 +8,12 @@ StockData* StockData::getInstance(void)
     return &stockDataInstance;
 }
 
-void StockData::load_stockData(string database, vector<ticker>& stock_data, int days)
+StockDataDiagCodeTypeDef StockData::load_stockData(string database, vector<ticker>& stock_data, int days)
 {
     // ACB,20211217,33.15,33.3,33.05,33.2,2403500
     int _skip = 0;
     ifstream file(database.c_str());
+    if(!file) return STOCKDATA_NO_DATABASE;
     string line;
     string date_lock;
     while (getline(file, line) && days != 0)
@@ -71,6 +72,7 @@ void StockData::load_stockData(string database, vector<ticker>& stock_data, int 
         }
     }
     file.close();
+    return STOCKDATA_OK;
 }
 
 string StockData::display_ticker_data(string name, vector<ticker>& stock_data, int offset)
@@ -98,12 +100,13 @@ string StockData::display_ticker_data(ticker m_ticker, int offset)
     else return "";
 }
 
-void StockData::load_standard(string file, vector<float>& dataout)
+StockDataDiagCodeTypeDef StockData::load_standard(string file, vector<float>& dataout)
 {
     vector<pair<float, float>> raw_data;
     bool lock = true;
     FILE* ptr;
     ptr = fopen(file.c_str(), "rb");
+    if(ptr == nullptr) return STOCKDATA_NO_BASEFILE;
     char* buffer = new char[4096];
     bzero(buffer, 4096);
     int fsize = fread(buffer, 1, 4096, ptr);
@@ -131,4 +134,5 @@ void StockData::load_standard(string file, vector<float>& dataout)
     for(int i = 0; i < raw_data.size() - 1; i++){
         dataout.push_back( (raw_data[i+1].second - raw_data[i].second) / (raw_data[i+1].first - raw_data[i].first) );
     }
+    return STOCKDATA_OK;
 }

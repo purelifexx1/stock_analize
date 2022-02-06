@@ -33,10 +33,18 @@ int main(int args, char** params)
     {
         vector<float> basedata;
         vector<pair<float, string>> result;
-        m_StockData->load_standard(m_Args.m_GraphMatch.basefilename, basedata);
+        if(STOCKDATA_OK != m_StockData->load_standard(m_Args.m_GraphMatch.basefilename, basedata))
+        {
+            sstr("No basefile, please check the path again");
+            exit(1);
+        }
         int selected_nums = m_Args.output_nums; //28
         int num_of_day = basedata.size() + 2;
-        m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, num_of_day);
+        if(STOCKDATA_OK != m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, num_of_day))
+        {
+            sstr("No database file, please check the path again");
+            exit(1);
+        }
         m_StockDataAlg->cal_derivative(HSX_data);
         m_StockDataAlg->cal_similar(HSX_data, basedata, result);
         sort(result.begin(), result.end());
@@ -47,7 +55,11 @@ int main(int args, char** params)
     }
     else if(m_Args.m_Flag == VOLUME_SORTING)
     {
-        m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, m_Args.m_VolumeSorting.spans);
+        if(STOCKDATA_OK != m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, m_Args.m_VolumeSorting.spans))
+        {
+            sstr("No database file, please check the path again");
+            exit(1);
+        }
         vector<ticker> result;
         for(ticker& i : HSX_data)
         {

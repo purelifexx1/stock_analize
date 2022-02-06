@@ -39,6 +39,14 @@ struct StockAnalizeTest: public testing::Test
     }
 };
 
+TEST_F(StockAnalizeTest, StockData_Test)
+{
+    vector<float> standard;
+    vector<ticker> temp;
+    EXPECT_EQ(STOCKDATA_NO_BASEFILE, m_StockData->load_standard("dummy.txt", standard));
+    EXPECT_EQ(STOCKDATA_NO_DATABASE, m_StockData->load_stockData("dummy.txt", temp, 20));
+}
+
 TEST_F(StockAnalizeTest, InputArgs_GraphAlg_Test)
 {
     ArgsInputTypeDef m_Args;

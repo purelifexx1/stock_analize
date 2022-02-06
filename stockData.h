@@ -16,6 +16,12 @@ using namespace std;
 
 typedef enum
 {
+    STOCKDATA_OK,
+    STOCKDATA_NO_BASEFILE,
+    STOCKDATA_NO_DATABASE
+} StockDataDiagCodeTypeDef;
+typedef enum
+{
     PRICE_INCREASE,
     PRICE_DECREASE
 } DateTrendTypeDef;
@@ -49,10 +55,10 @@ class StockData
 public:
     StockData(){}
     static StockData* getInstance(void);
-    void load_stockData(string database, vector<ticker>& stock_data, int days);
+    StockDataDiagCodeTypeDef load_stockData(string database, vector<ticker>& stock_data, int days);
     string display_ticker_data(string name, vector<ticker>& stock_data, int offset);
     string display_ticker_data(ticker m_ticker, int offset);
-    void load_standard(string file, vector<float>& dataout);
+    StockDataDiagCodeTypeDef load_standard(string file, vector<float>& dataout);
 
 
 };
