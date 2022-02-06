@@ -2,7 +2,8 @@ CC=gcc
 CXX=g++
 RM= rm -f
 IDIR=./
-CXFLAGS=-I$(IDIR) -std=c++17
+CXXFLAGS=-I$(IDIR) -std=c++17
+LDDFLAGS=-g
 
 SRC_FILES=\
 	stockAnalize.cc \
@@ -11,4 +12,4 @@ SRC_FILES=\
 	command.cc
 
 all: $(SRC_FILES)
-	$(CXX) $(SRC_FILES) $(CXFLAGS)
+	$(CXX) $(SRC_FILES) $(CXXFLAGS) $(LDDFLAGS)

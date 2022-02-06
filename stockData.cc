@@ -86,6 +86,18 @@ string StockData::display_ticker_data(string name, vector<ticker>& stock_data, i
     return "";
 }
 
+string StockData::display_ticker_data(ticker m_ticker, int offset)
+{
+    if(offset < m_ticker.data.size())
+    {
+        stringstream ss;
+        ticker_data temp = m_ticker.data[m_ticker.data.size() - 1 - offset];
+        ss << "open: " << temp.open << ", close: " << temp.close << ", volume: " << temp.volume;
+        return ss.str();
+    }
+    else return "";
+}
+
 void StockData::load_standard(string file, vector<float>& dataout)
 {
     vector<pair<float, float>> raw_data;

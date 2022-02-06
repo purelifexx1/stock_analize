@@ -30,10 +30,18 @@ typedef struct {
     DateTrendTypeDef trend;
 } ticker_data;
 
+typedef struct
+{
+    string endDate;
+    int totalVolume;
+    float percentDiff;
+} GreenVolumeClusterDataTypeDef;
+
 typedef struct {
     string name;
     vector<ticker_data> data;
     vector<float> derivative_data;
+    GreenVolumeClusterDataTypeDef greenCluster;
 } ticker;
 
 class StockData
@@ -43,6 +51,7 @@ public:
     static StockData* getInstance(void);
     void load_stockData(string database, vector<ticker>& stock_data, int days);
     string display_ticker_data(string name, vector<ticker>& stock_data, int offset);
+    string display_ticker_data(ticker m_ticker, int offset);
     void load_standard(string file, vector<float>& dataout);
 
 

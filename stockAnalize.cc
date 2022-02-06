@@ -7,8 +7,8 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
-#include "stockData.h"
 #include "stockDataAlg.h"
+#include "stockData.h"
 #include "commonTypeDef.h"
 #include "command.h"
 
@@ -17,9 +17,6 @@ using namespace std;
 vector<ticker> HSX_data;
 vector<ticker> HNX_data;
 vector<ticker> UPCOM_data;
-
-vector<float> basedata;
-vector<pair<float, string>> result;
 
 int main(int args, char** params)
 {
@@ -34,6 +31,8 @@ int main(int args, char** params)
     StockDataAlg* m_StockDataAlg = StockDataAlg::getInstance();
     if(m_Args.m_Flag == GRAPH_MATCH)
     {
+        vector<float> basedata;
+        vector<pair<float, string>> result;
         m_StockData->load_standard(m_Args.m_GraphMatch.basefilename, basedata);
         int selected_nums = m_Args.output_nums; //28
         int num_of_day = basedata.size() + 2;
@@ -43,13 +42,26 @@ int main(int args, char** params)
         sort(result.begin(), result.end());
         for(int i = 0; i < selected_nums; i++)
         {
-            cout << result[i].second << ": " 
-            << m_StockData->display_ticker_data(result[i].second, HSX_data, 0) << endl;
+            sstr(result[i].second, ": ", m_StockData->display_ticker_data(result[i].second, HSX_data, 0));
         }
     }
     else if(m_Args.m_Flag == VOLUME_SORTING)
     {
-        
+        m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, m_Args.m_VolumeSorting.spans);
+        vector<ticker> result;
+        for(ticker& i : HSX_data)
+        {
+            m_StockDataAlg->cal_largest_green_cluster(i);
+            result.push_back(i);
+        }
+        sort(result.begin(), result.end(), [](ticker a, ticker b){
+            return a.greenCluster.percentDiff < b.greenCluster.percentDiff;
+        });
+        for(int i = 0; i < m_Args.output_nums; i++)
+        {
+            sstr(result[i].name, ": ", m_StockData->display_ticker_data(result[i], 0));
+            int tt = 0;
+        }
     }
     exit(0);
 }

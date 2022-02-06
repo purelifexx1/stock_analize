@@ -78,6 +78,26 @@ CommandDiagCodeTypeDef CommandParams::argumentsHandle(vector<string> params, Arg
             m_Args.m_GraphMatch.fullfill_index++;
             m_Args.m_GraphMatch.basefilename = tempFilename;
         }
+        else if(optionFlag == "-s")
+        {
+            char *endptr;
+            int nums = strtol(params[++i].c_str(), &endptr, 10);
+            if(endptr == params[i])
+            {
+                sstr("Invalid value for spans value");
+                return COMMAND_INVALID_SPAN;
+            }
+            else
+            {
+                if(nums <= 0)
+                {
+                    sstr("Negative value for spans value");
+                    return COMMAND_INVALID_SPAN;
+                }
+                m_Args.m_VolumeSorting.fullfill_index++;
+                m_Args.m_VolumeSorting.spans = nums;
+            }
+        }
         else
         {
             sstr("Invalid flag: ", optionFlag);

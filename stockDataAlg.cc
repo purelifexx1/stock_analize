@@ -46,3 +46,35 @@ void StockDataAlg::cal_similar(vector<ticker>& stock_data, vector<float>& base, 
         }
     }
 }
+
+void StockDataAlg::cal_largest_green_cluster(ticker& m_ticker)
+{
+    int tempVolume = 0;
+    int stackCount = 0;
+    int flushTotalValue = 0;
+    m_ticker.greenCluster.totalVolume = 0;
+    for(auto i = m_ticker.data.end()-1; i >= m_ticker.data.begin(); i--)
+    {
+        if(i->trend == PRICE_INCREASE)
+        {
+            stackCount++;
+            tempVolume += i->volume;
+        }
+        else if(i->trend == PRICE_DECREASE)
+        {
+            if(stackCount >= 3)
+            {
+                if(tempVolume >= m_ticker.greenCluster.totalVolume)
+                {
+                    m_ticker.greenCluster.endDate = i->date;
+                    m_ticker.greenCluster.totalVolume = tempVolume;
+                    flushTotalValue = 0;
+                }
+            }
+            tempVolume = 0;
+            stackCount = 0;
+            flushTotalValue += i->volume;
+        }
+    }
+    m_ticker.greenCluster.percentDiff = (float)flushTotalValue / m_ticker.greenCluster.totalVolume;
+}
