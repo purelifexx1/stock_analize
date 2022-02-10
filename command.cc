@@ -8,6 +8,7 @@ CommandParams* CommandParams::getInstance()
 
 void CommandParams::initializeArgs(ArgsInputTypeDef& m_Args)
 {
+    m_Args.isExport = false;
     m_Args.output_nums = -1;
     m_Args.m_Flag = NUM_OF_FLAGS;
 
@@ -21,7 +22,7 @@ CommandDiagCodeTypeDef CommandParams::argumentsHandle(vector<string> params, Arg
     //arguments input
     for(int i = 1; i < params.size(); i++)
     {
-        if(i == params.size() - 1)
+        if(i == params.size() - 1 && params[i] != "-e")
         { // shouldnt happen because all the params will be read in couple
             sstr("Missing value for the last flag");
             return COMMAND_NO_LAST_VALUE;
@@ -97,6 +98,10 @@ CommandDiagCodeTypeDef CommandParams::argumentsHandle(vector<string> params, Arg
                 m_Args.m_VolumeSorting.fullfill_index++;
                 m_Args.m_VolumeSorting.spans = nums;
             }
+        }
+        else if(optionFlag == "-e")
+        {
+            m_Args.isExport = true;
         }
         else
         {

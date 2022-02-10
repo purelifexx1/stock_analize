@@ -12,6 +12,8 @@
 #include <sstream>
 #include "commonTypeDef.h"
 
+#define TRADINGVIEW_SOURCE "https://vn.tradingview.com/chart/?symbol=HOSE%3A"
+
 using namespace std;
 
 typedef enum

@@ -40,7 +40,7 @@ int main(int args, char** params)
         }
         int selected_nums = m_Args.output_nums; //28
         int num_of_day = basedata.size() + 2;
-        if(STOCKDATA_OK != m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, num_of_day))
+        if(STOCKDATA_OK != m_StockData->load_stockData("stock_data/HNX.csv", HSX_data, num_of_day))
         {
             sstr("No database file, please check the path again");
             exit(1);
@@ -51,6 +51,23 @@ int main(int args, char** params)
         for(int i = 0; i < selected_nums; i++)
         {
             sstr(result[i].second, ": ", m_StockData->display_ticker_data(result[i].second, HSX_data, 0));
+        }
+        if(m_Args.isExport == true)
+        {
+            FILE* fl;
+            fl = fopen("/home/purelife/Shared/output.txt", "w");
+            if(fl == nullptr)
+            {
+                sstr("Cant log output file");
+                exit(1);
+            }
+            stringstream ss;
+            for(int i = 0; i < m_Args.output_nums; i++)
+            {
+                ss << TRADINGVIEW_SOURCE << result[i].second << "  " << m_StockData->display_ticker_data(result[i].second, HSX_data, 0) << endl;
+            }
+            fwrite(ss.str().c_str(), 1, ss.str().size(), fl);
+            fclose(fl);
         }
     }
     else if(m_Args.m_Flag == VOLUME_SORTING)
@@ -73,6 +90,23 @@ int main(int args, char** params)
         {
             sstr(result[i].name, ": ", m_StockData->display_ticker_data(result[i], 0));
             int tt = 0;
+        }
+        if(m_Args.isExport == true)
+        {
+            FILE* fl;
+            fl = fopen("/home/purelife/Shared/output.txt", "w");
+            if(fl == nullptr)
+            {
+                sstr("Cant log output file");
+                exit(1);
+            }
+            stringstream ss;
+            for(int i = 0; i < m_Args.output_nums; i++)
+            {
+                ss << TRADINGVIEW_SOURCE << result[i].name << "  " << m_StockData->display_ticker_data(result[i].name, HSX_data, 0) << endl;
+            }
+            fwrite(ss.str().c_str(), 1, ss.str().size(), fl);
+            fclose(fl);
         }
     }
     exit(0);
