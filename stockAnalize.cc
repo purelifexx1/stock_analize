@@ -40,7 +40,7 @@ int main(int args, char** params)
         }
         int selected_nums = m_Args.output_nums; //28
         int num_of_day = basedata.size() + 2;
-        if(STOCKDATA_OK != m_StockData->load_stockData("stock_data/HNX.csv", HSX_data, num_of_day))
+        if(STOCKDATA_OK != m_StockData->load_stockData("stock_data/HSX.csv", HSX_data, num_of_day))
         {
             sstr("No database file, please check the path again");
             exit(1);
@@ -55,7 +55,7 @@ int main(int args, char** params)
         if(m_Args.isExport == true)
         {
             FILE* fl;
-            fl = fopen("/home/purelife/Shared/output.txt", "w");
+            fl = fopen(m_Args.m_exportPath.c_str(), "w");
             if(fl == nullptr)
             {
                 sstr("Cant log output file");
@@ -94,7 +94,7 @@ int main(int args, char** params)
         if(m_Args.isExport == true)
         {
             FILE* fl;
-            fl = fopen("/home/purelife/Shared/output.txt", "w");
+            fl = fopen(m_Args.m_exportPath.c_str(), "w");
             if(fl == nullptr)
             {
                 sstr("Cant log output file");

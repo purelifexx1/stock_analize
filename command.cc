@@ -22,7 +22,7 @@ CommandDiagCodeTypeDef CommandParams::argumentsHandle(vector<string> params, Arg
     //arguments input
     for(int i = 1; i < params.size(); i++)
     {
-        if(i == params.size() - 1 && params[i] != "-e")
+        if(i == params.size() - 1)
         { // shouldnt happen because all the params will be read in couple
             sstr("Missing value for the last flag");
             return COMMAND_NO_LAST_VALUE;
@@ -102,6 +102,7 @@ CommandDiagCodeTypeDef CommandParams::argumentsHandle(vector<string> params, Arg
         else if(optionFlag == "-e")
         {
             m_Args.isExport = true;
+            m_Args.m_exportPath = params[++i];
         }
         else
         {

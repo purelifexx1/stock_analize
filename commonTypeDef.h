@@ -37,6 +37,7 @@ typedef struct
     ArgsFlagTypeDef m_Flag;
     GraphMatchTypeDef m_GraphMatch;
     VolumeSortingTypeDef m_VolumeSorting;
+    string m_exportPath;
     bool isExport;
     int output_nums;
 } ArgsInputTypeDef;
